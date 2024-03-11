@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema De Avaliação Da aula Escola Inexus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Avaliação da Da Escola Inexus Formação Profissional Dia: 11/03/2024</h1>
+    <form id="avaliacao-form">
+        <label for="nota">Nota:</label>
+        <select id="nota" name="nota">
+            <option value="excelente"><i class="far fa-smile"></i> Excelente</option>
+            <option value="bom"><i class="far fa-grin"></i> Bom</option>
+            <option value="regular"><i class="far fa-meh"></i> Regular</option>
+            <option value="ruim"><i class="far fa-frown"></i> Ruim</option>
+            <option value="pessimo"><i class="far fa-sad-tear"></i> Péssimo</option>
+        </select>
+        <div id="imagem-placeholder"></div>
+        <br>
+        <label for="motivo">Explique o motivo da avaliação:</label><br>
+        <textarea id="motivo" name="motivo" rows="4" cols="50"></textarea>
+        <br>
+        <button type="submit">Enviar Avaliação</button>
+    </form>
+    <script>
+        document.getElementById("avaliacao-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+
+            // Captura os valores dos campos do formulário
+            const nota = document.getElementById("nota").value;
+            const motivo = document.getElementById("motivo").value;
+
+            // Cria um objeto com os dados da avaliação
+            const avaliacao = {
+                nota: nota,
+                motivo: motivo
+            };
+
+            // Converte o objeto para uma string JSON
+            const avaliacaoJSON = JSON.stringify(avaliacao);
+
+            // Cria um blob com os dados da avaliação
+            const blob = new Blob([avaliacaoJSON], { type: "text/plain" });
+
+            // Cria um link de download para o blob
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "avaliacao.txt";
+
+            // Simula um clique no link para iniciar o download
+            link.click();
+
+            // Limpa os campos do formulário após o envio
+            document.getElementById("nota").value = "";
+            document.getElementById("motivo").value = "";
+
+            // Mensagem de confirmação
+            alert("Avaliação enviada com sucesso!");
+        });
+
+        document.getElementById("nota").addEventListener("change", function() {
+            var notaSelecionada = this.value;
+            var imagemPlaceholder = document.getElementById("imagem-placeholder");
+
+            // Limpa o conteúdo atual do espaço reservado para a imagem
+            imagemPlaceholder.innerHTML = "";
+
+            // Cria e adiciona a imagem correspondente à nota selecionada
+            var imagem = document.createElement("img");
+            imagem.src = getImagemUrl(notaSelecionada);
+            imagem.alt = "Ícone da nota selecionada";
+            imagem.classList.add("icon");
+            imagemPlaceholder.appendChild(imagem);
+        });
+
+        // Função para obter a URL da imagem com base na nota selecionada
+        function getImagemUrl(nota) {
+            switch (nota) {
+                case "excelente":
+                    return "https://i.postimg.cc/wvftVN3T/image.png";
+                case "bom":
+                    return "https://i.postimg.cc/BZm5Y8RF/image.png";
+                case "regular":
+                    return "https://i.postimg.cc/SKVjS967/image.png";
+                case "ruim":
+                    return "https://i.postimg.cc/WtR1WwVj/image.png";
+                case "pessimo":
+                    return "https://i.postimg.cc/Ls4L32vD/image.png";
+                default:
+                    return "";
+            }
+        }
+    </script>
+</body>
+</html>
